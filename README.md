@@ -13,7 +13,7 @@ This tool contains the subset of features from `lerna` and some extra features r
 ## Installation
 
 ```bash
-npm i mono-repo
+npm i npm-mono-repo
 ```
 
 ## Usage

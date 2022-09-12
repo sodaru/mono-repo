@@ -1,6 +1,6 @@
 {
   "name": "npm-mono-repo",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Sodaru Mono-Repo Utility",
   "main": "dist/index.js",
   "bin": {

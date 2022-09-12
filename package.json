@@ -1,0 +1,64 @@
+{
+  "name": "mono-repo",
+  "version": "0.0.0",
+  "description": "Sodaru Mono-Repo Utility",
+  "main": "dist/index.js",
+  "bin": {
+    "mono-repo": "bin/mono-repo.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "clean": "npx rimraf dist",
+    "prettier": "npx prettier --check --ignore-unknown ./**/*",
+    "eslint": "npx eslint ./ --no-error-on-unmatched-pattern",
+    "bundle": "npx esbuild src/index.ts --bundle --outdir=dist --platform=node --minify",
+    "build": "npm run prettier && npm run eslint && npm run clean && npm run bundle",
+    "pretest": "npm run build",
+    "test": "npx jest",
+    "postversion": "git push --follow-tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sodaru/mono-repo.git"
+  },
+  "keywords": [
+    "monorepo",
+    "sodev",
+    "sodaru-mono-repo",
+    "mono-repo"
+  ],
+  "author": "Raghavendra K R<raghavendra@sodaru.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sodaru/mono-repo/issues"
+  },
+  "homepage": "https://github.com/sodaru/mono-repo#readme",
+  "devDependencies": {
+    "@types/jest": "^29.0.1",
+    "@types/lodash": "^4.14.178",
+    "@types/node": "^17.0.18",
+    "@types/rimraf": "^3.0.2",
+    "chalk": "^4.1.2",
+    "esbuild": "^0.14.23",
+    "eslint-config-sodaru": "^1.0.0",
+    "graph-dsa": "^1.0.0",
+    "jest": "^29.0.3",
+    "lodash": "^4.17.21",
+    "nodejs-cli-runner": "^1.1.1",
+    "nodejs-file-utils": "^1.0.1",
+    "prettier-config-sodaru": "^1.0.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.0.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.8.3"
+  },
+  "prettier": "prettier-config-sodaru",
+  "eslintConfig": {
+    "extends": [
+      "sodaru"
+    ]
+  }
+}

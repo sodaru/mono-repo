@@ -11,6 +11,7 @@ describe("Test task doesVersionMatch", () => {
         [
           {
             name: "@s/pkg1",
+            version: "1.0.0",
             dirName: "p1",
             dependencies: { local: {}, external: {} }
           }
@@ -27,6 +28,7 @@ describe("Test task doesVersionMatch", () => {
         [
           {
             name: "@s/pkg1",
+            version: "1.0.0",
             dirName: "p1",
             dependencies: {
               local: {},
@@ -50,6 +52,7 @@ describe("Test task doesVersionMatch", () => {
         [
           {
             name: "@s/pkg1",
+            version: "1.0.0",
             dirName: "p1",
             dependencies: {
               local: {},
@@ -62,6 +65,7 @@ describe("Test task doesVersionMatch", () => {
           },
           {
             name: "@s/pkg2",
+            version: "1.0.0",
             dirName: "p2",
             dependencies: {
               local: { dev: { "@s/pkg1": "^1.0.0" } },
@@ -88,6 +92,7 @@ describe("Test task doesVersionMatch", () => {
         [
           {
             name: "@s/pkg1",
+            version: "1.0.0",
             dirName: "p1",
             dependencies: {
               local: {},
@@ -115,6 +120,7 @@ describe("Test task doesVersionMatch", () => {
         [
           {
             name: "@s/pkg1",
+            version: "1.0.0",
             dirName: "p1",
             dependencies: {
               local: {},
@@ -127,6 +133,7 @@ describe("Test task doesVersionMatch", () => {
           },
           {
             name: "@s/pkg2",
+            version: "1.0.0",
             dirName: "p2",
             dependencies: {
               local: { dev: { "@s/pkg1": "^1.0.0" } },
@@ -156,6 +163,7 @@ describe("Test task doesVersionMatch", () => {
         [
           {
             name: "@s/pkg1",
+            version: "1.0.0",
             dirName: "p1",
             dependencies: {
               local: {},
@@ -168,6 +176,7 @@ describe("Test task doesVersionMatch", () => {
           },
           {
             name: "@s/pkg2",
+            version: "1.0.0",
             dirName: "p2",
             dependencies: {
               local: { dev: { "@s/pkg1": "^1.0.0" } },
@@ -187,12 +196,59 @@ describe("Test task doesVersionMatch", () => {
     ).resolves.toBeUndefined();
   });
 
+  test("for local only conflicting dependencies", async () => {
+    await expect(
+      doesVersionsMatch(
+        [
+          {
+            name: "@s/pkg1",
+            version: "1.0.0",
+            dirName: "p1",
+            dependencies: {
+              local: {},
+              external: {
+                dep: { lodash: "^1.0.0" }
+              }
+            }
+          },
+          {
+            name: "@s/pkg2",
+            version: "1.0.0",
+            dirName: "p2",
+            dependencies: {
+              local: { dev: { "@s/pkg1": "^1.0.0" } },
+              external: {
+                dev: {
+                  lodash: "^1.0.0",
+                  typescript: "^4.5.1",
+                  tslib: "^2.3.4"
+                }
+              }
+            }
+          },
+          {
+            name: "@s/pkg3",
+            version: "1.0.0",
+            dirName: "p3",
+            dependencies: {
+              local: { dev: { "@s/pkg1": "^0.1.0" } },
+              external: {}
+            }
+          }
+        ],
+        [],
+        []
+      )
+    ).resolves.toBeUndefined();
+  });
+
   test("for filters with conflicting dependencies", async () => {
     await expect(
       doesVersionsMatch(
         [
           {
             name: "@s/pkg1",
+            version: "1.0.0",
             dirName: "p1",
             dependencies: {
               local: {},
@@ -205,6 +261,7 @@ describe("Test task doesVersionMatch", () => {
           },
           {
             name: "@s/pkg2",
+            version: "1.0.0",
             dirName: "p2",
             dependencies: {
               local: { dev: { "@s/pkg1": "^1.0.0" } },
@@ -219,6 +276,7 @@ describe("Test task doesVersionMatch", () => {
           },
           {
             name: "@s/pkg3",
+            version: "1.0.0",
             dirName: "p3",
             dependencies: {
               local: { dev: { "@s/pkg1": "^1.0.0" } },

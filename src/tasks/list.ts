@@ -54,6 +54,7 @@ export const list = async (dir: string): Promise<Package[]> => {
 
       return {
         name: packageJson.name,
+        version: packageJson.version,
         dirName: packageDirName,
         dependencies: {
           local: {},

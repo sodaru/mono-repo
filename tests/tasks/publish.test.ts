@@ -31,16 +31,19 @@ describe("Test task publish", () => {
   const packages: Package[] = [
     {
       name: "@s/pkg1",
+      version: "1.0.0",
       dirName: "p1",
       dependencies: { local: {}, external: {} }
     },
     {
       name: "@s/pkg2",
+      version: "1.0.0",
       dirName: "p2",
       dependencies: { local: {}, external: { dev: { tslib: "^2.3.1" } } }
     },
     {
       name: "@s/pkg3",
+      version: "1.0.0",
       dirName: "p3",
       dependencies: {
         local: { dep: { "@s/pkg1": "^1.0.1" } },
@@ -64,13 +67,20 @@ describe("Test task publish", () => {
   });
 
   test("without packages", async () => {
-    await expect(publish(dir, [], false)).resolves.toBeUndefined();
+    await expect(publish(dir, "1.0.0", [], false)).resolves.toBeUndefined();
     expect(logInfo).toHaveBeenCalledTimes(0);
     expect(childProcess).toHaveBeenCalledTimes(0);
   });
 
   test("with packages", async () => {
-    await expect(publish(dir, packages, false)).resolves.toBeUndefined();
+    mockedFunction(readJsonFileStore).mockImplementation(async () => {
+      const packageJson = { version: "1.0.0" };
+      return packageJson;
+    });
+
+    await expect(
+      publish(dir, "1.0.0", packages, false)
+    ).resolves.toBeUndefined();
 
     expect(logInfo).toHaveBeenCalledTimes(3);
     for (const i of [1, 2, 3]) {
@@ -94,7 +104,14 @@ describe("Test task publish", () => {
   });
 
   test("with verbose", async () => {
-    await expect(publish(dir, packages, true)).resolves.toBeUndefined();
+    mockedFunction(readJsonFileStore).mockImplementation(async () => {
+      const packageJson = { version: "1.0.0" };
+      return packageJson;
+    });
+
+    await expect(
+      publish(dir, "1.0.0", packages, true)
+    ).resolves.toBeUndefined();
 
     expect(logInfo).toHaveBeenCalledTimes(3);
     for (const i of [1, 2, 3]) {
@@ -119,7 +136,7 @@ describe("Test task publish", () => {
 
   test("skip private package", async () => {
     mockedFunction(readJsonFileStore).mockImplementation(async path => {
-      const packageJson = {};
+      const packageJson = { version: "1.0.0" };
       if (path.endsWith(`p2${sep}package.json`)) {
         packageJson["private"] = true;
       }
@@ -128,7 +145,58 @@ describe("Test task publish", () => {
       }
       return packageJson;
     });
-    await expect(publish(dir, packages, false)).resolves.toBeUndefined();
+    await expect(
+      publish(dir, "1.0.0", packages, false)
+    ).resolves.toBeUndefined();
+
+    expect(logInfo).toHaveBeenCalledTimes(2);
+    expect(logInfo).toHaveBeenNthCalledWith(
+      1,
+      `[@s/pkg1] Publishing: npm publish`
+    );
+    expect(logInfo).toHaveBeenNthCalledWith(
+      2,
+      `[@s/pkg3] Publishing: npm publish`
+    );
+
+    expect(childProcess).toHaveBeenCalledTimes(2);
+    expect(childProcess).toHaveBeenNthCalledWith(
+      1,
+      join(dir, `p1`),
+      npmCommand,
+      ["publish", "--foreground-scripts"],
+      { show: "error", return: "off" },
+      { show: "error", return: "off" },
+      chalk.magenta.bold(`[@s/pkg1] `)
+    );
+    expect(childProcess).toHaveBeenNthCalledWith(
+      2,
+      join(dir, `p3`),
+      npmCommand,
+      ["publish", "--foreground-scripts"],
+      { show: "error", return: "off" },
+      { show: "error", return: "off" },
+      chalk.magenta.bold(`[@s/pkg3] `)
+    );
+  });
+
+  test("skip packages with different version from rootVersion", async () => {
+    mockedFunction(readJsonFileStore).mockImplementation(async path => {
+      const packageJson = {};
+      if (path.endsWith(`p1${sep}package.json`)) {
+        packageJson["version"] = "1.0.0";
+      }
+      if (path.endsWith(`p2${sep}package.json`)) {
+        packageJson["version"] = "0.2.0";
+      }
+      if (path.endsWith(`p3${sep}package.json`)) {
+        packageJson["version"] = "1.0.0";
+      }
+      return packageJson;
+    });
+    await expect(
+      publish(dir, "1.0.0", packages, false)
+    ).resolves.toBeUndefined();
 
     expect(logInfo).toHaveBeenCalledTimes(2);
     expect(logInfo).toHaveBeenNthCalledWith(
@@ -162,13 +230,18 @@ describe("Test task publish", () => {
   });
 
   test("with run failure", async () => {
+    mockedFunction(readJsonFileStore).mockImplementation(async () => {
+      const packageJson = { version: "1.0.0" };
+      return packageJson;
+    });
+
     mockedFunction(childProcess).mockImplementation(async dir => {
       if (dir.endsWith("p2")) {
         throw new ChildProcessError("npm publish", {});
       }
       return {};
     });
-    await expect(publish(dir, packages, false)).rejects.toEqual(
+    await expect(publish(dir, "1.0.0", packages, false)).rejects.toEqual(
       new ChildProcessError("npm publish", {})
     );
 

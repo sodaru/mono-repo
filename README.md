@@ -8,7 +8,7 @@ Mono repos helps to build the related packages in single git repos
 
 `lerna` is the opensource tool used to maintain npm mono-repos. lerna is not maintained actively and has not suppport for peer dependencies
 
-This tool contains the subset of features from `lerna` and some extra features required by sodaru
+This tool contains the subset of features from `lerna` and some extra features
 
 ## Installation
 
@@ -93,21 +93,19 @@ Runs the npm script in every (or selected) package (**In the 'dependency first' 
 
 - `npm-script` ( _**Required**_ ) Name of the script to be run
 
-  - if a package does not have npm-script , the command fails
-
 - `[<npm-script-args>]` ( _Optional_ ) list of args to be passed to `npm run` command
 
 #### **5. version**
 
 ```bash
-mono-repo version [-v]
+mono-repo version [<package-filters>] [-v]
 ```
 
-Applies root package version to all child packages, and updates the symlinked dependency's version
+Applies root package version to all (or selected) child packages, and updates the symlinked dependency's version
 
-To be used in `version` script of the root package
+To be used in `version` script of the root package to pipeline the version change from root to child packages.
 
-> IMP NOTE : Lifecycle scipts `preversion`, `version`, `postversion` are not run
+> IMP NOTE: Lifecycle scipts `preversion`, `version`, `postversion` are not run
 
 #### **6. publish**
 
@@ -115,7 +113,7 @@ To be used in `version` script of the root package
 mono-repo publish [-v]
 ```
 
-Runs `npm publish` on all child packages (**In the 'dependency first' order**)
+Runs `npm publish` on all child packages (**In the 'dependency first' order**) whose version matches with the root package.
 
 - skips `private` packages
 

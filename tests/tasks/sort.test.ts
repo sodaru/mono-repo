@@ -11,33 +11,36 @@ describe("Test task sort", () => {
   ][] = [
     ["Empty", [], [], []],
     ["One Package", 
-      [{name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: {}}}], 
-      [{name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: {}}}], 
-      [{name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: {}}}]
+      [{name: "@s/pkg1", version: "1.0.0", dirName: "p1", dependencies: {local: {}, external: {}}}], 
+      [{name: "@s/pkg1", version: "1.0.0", dirName: "p1", dependencies: {local: {}, external: {}}}], 
+      [{name: "@s/pkg1", version: "1.0.0", dirName: "p1", dependencies: {local: {}, external: {}}}]
     ],
     ["Two Packages", 
-      [{name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: {}}}, {name: "@s/pkg2", dirName: "p2", dependencies: {local: {}, external: {}}}], 
-      [{name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: {}}}, {name: "@s/pkg2", dirName: "p2", dependencies: {local: {}, external: {}}}], 
-      [{name: "@s/pkg2", dirName: "p2", dependencies: {local: {}, external: {}}}, {name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: {}}}]
+      [{name: "@s/pkg1", version: "1.0.0", dirName: "p1", dependencies: {local: {}, external: {}}}, {name: "@s/pkg2",      version: "1.0.0",
+ dirName: "p2", dependencies: {local: {}, external: {}}}], 
+      [{name: "@s/pkg1", version: "1.0.0", dirName: "p1", dependencies: {local: {}, external: {}}}, {name: "@s/pkg2",      version: "1.0.0",
+ dirName: "p2", dependencies: {local: {}, external: {}}}], 
+      [{name: "@s/pkg2", version: "1.0.0", dirName: "p2", dependencies: {local: {}, external: {}}}, {name: "@s/pkg1",      version: "1.0.0",
+ dirName: "p1", dependencies: {local: {}, external: {}}}]
     ],
     ["multiple Packages with local and external dependencies", 
       [
-        {name: "@s/pkg4", dirName: "p4", dependencies: {local: {}, external: { dev: { lodash:"^1.0.0"}, peer: { lodash:"^1.0.0", "@s/pk1":"^1.1.0"}}}},
-        {name: "@s/pkg2", dirName: "p2", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}}, external: {}}},
-        {name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: { dep: { lodash:"^1.0.0"}}}},
-        {name: "@s/pkg3", dirName: "p3", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}, dev: {"@s/pkg2": "^1.2.0"}, peer: {"@s/pkg2": "^1.2.0"}}, external: {peer: {"tslib": "^2.4.0"}}}},
+        {name: "@s/pkg4", version: "1.0.0", dirName: "p4", dependencies: {local: {}, external: { dev: { lodash:"^1.0.0"}, peer: { lodash:"^1.0.0", "@s/pk1":"^1.1.0"}}}},
+        {name: "@s/pkg2", version: "1.0.0", dirName: "p2", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}}, external: {}}},
+        {name: "@s/pkg1", version: "1.0.0", dirName: "p1", dependencies: {local: {}, external: { dep: { lodash:"^1.0.0"}}}},
+        {name: "@s/pkg3", version: "1.0.0", dirName: "p3", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}, dev: {"@s/pkg2": "^1.2.0"}, peer: {"@s/pkg2": "^1.2.0"}}, external: {peer: {"tslib": "^2.4.0"}}}},
       ],
       [
-        {name: "@s/pkg4", dirName: "p4", dependencies: {local: {}, external: { dev: { lodash:"^1.0.0"}, peer: { lodash:"^1.0.0", "@s/pk1":"^1.1.0"}}}},
-        {name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: { dep: { lodash:"^1.0.0"}}}},
-        {name: "@s/pkg2", dirName: "p2", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}}, external: {}}},
-        {name: "@s/pkg3", dirName: "p3", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}, dev: {"@s/pkg2": "^1.2.0"}, peer: {"@s/pkg2": "^1.2.0"}}, external: {peer: {"tslib": "^2.4.0"}}}},
+        {name: "@s/pkg4", version: "1.0.0", dirName: "p4", dependencies: {local: {}, external: { dev: { lodash:"^1.0.0"}, peer: { lodash:"^1.0.0", "@s/pk1":"^1.1.0"}}}},
+        {name: "@s/pkg1", version: "1.0.0", dirName: "p1", dependencies: {local: {}, external: { dep: { lodash:"^1.0.0"}}}},
+        {name: "@s/pkg2", version: "1.0.0", dirName: "p2", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}}, external: {}}},
+        {name: "@s/pkg3", version: "1.0.0", dirName: "p3", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}, dev: {"@s/pkg2": "^1.2.0"}, peer: {"@s/pkg2": "^1.2.0"}}, external: {peer: {"tslib": "^2.4.0"}}}},
       ],
       [
-        {name: "@s/pkg3", dirName: "p3", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}, dev: {"@s/pkg2": "^1.2.0"}, peer: {"@s/pkg2": "^1.2.0"}}, external: {peer: {"tslib": "^2.4.0"}}}},
-        {name: "@s/pkg2", dirName: "p2", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}}, external: {}}},
-        {name: "@s/pkg1", dirName: "p1", dependencies: {local: {}, external: { dep: { lodash:"^1.0.0"}}}},
-        {name: "@s/pkg4", dirName: "p4", dependencies: {local: {}, external: { dev: { lodash:"^1.0.0"}, peer: { lodash:"^1.0.0", "@s/pk1":"^1.1.0"}}}},
+        {name: "@s/pkg3", version: "1.0.0", dirName: "p3", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}, dev: {"@s/pkg2": "^1.2.0"}, peer: {"@s/pkg2": "^1.2.0"}}, external: {peer: {"tslib": "^2.4.0"}}}},
+        {name: "@s/pkg2", version: "1.0.0", dirName: "p2", dependencies: {local: {dep: {"@s/pkg1": "^1.2.0"}}, external: {}}},
+        {name: "@s/pkg1", version: "1.0.0", dirName: "p1", dependencies: {local: {}, external: { dep: { lodash:"^1.0.0"}}}},
+        {name: "@s/pkg4", version: "1.0.0", dirName: "p4", dependencies: {local: {}, external: { dev: { lodash:"^1.0.0"}, peer: { lodash:"^1.0.0", "@s/pk1":"^1.1.0"}}}},
       ],
     ]
 

@@ -22,6 +22,7 @@ const publishAction = async (options: CommonOptions) => {
     publish,
     options.verbose,
     packagesDir,
+    rootPackageJson.version,
     packages,
     options.verbose
   );

@@ -25,6 +25,7 @@ export type RootPackageJson = PackageJson & {
 
 export type Package = {
   name: string;
+  version: string;
   dirName: string;
   dependencies: {
     local: {

@@ -1,9 +1,15 @@
 import { CommonOptions, taskRunner, Command } from "nodejs-cli-runner";
+import {
+  addPackageFiltersOption,
+  PackageFiltersOption
+} from "../commandCommonOptions";
 import { list } from "../tasks/list";
 import { version } from "../tasks/version";
 import { getPackagesDir, readRootPackageJson } from "../utils";
 
-const versionAction = async (options: CommonOptions) => {
+type VersionOptions = CommonOptions & PackageFiltersOption;
+
+const versionAction = async (options: VersionOptions) => {
   const dir = process.cwd();
 
   const rootPackageJson = await readRootPackageJson(dir);
@@ -23,11 +29,13 @@ const versionAction = async (options: CommonOptions) => {
     options.verbose,
     packagesDir,
     rootPackageJson.version,
-    packages
+    packages,
+    options.packages
   );
 };
 
 const versionCommand = new Command("version");
 versionCommand.action(versionAction);
+addPackageFiltersOption(versionCommand);
 
 export default versionCommand;

@@ -35,21 +35,25 @@ describe("Test task clean", () => {
   const packages = [
     {
       name: "pkg1",
+      version: "1.0.0",
       dirName: "p1",
       dependencies: { local: {}, external: {} }
     },
     {
       name: "pkg2",
+      version: "1.0.0",
       dirName: "p2",
       dependencies: { local: {}, external: {} }
     },
     {
       name: "pkg3",
+      version: "1.0.0",
       dirName: "p3",
       dependencies: { local: {}, external: {} }
     },
     {
       name: "pkg4",
+      version: "1.0.0",
       dirName: "p4",
       dependencies: { local: { dep: { pkg2: "^1.0.1" } }, external: {} }
     }

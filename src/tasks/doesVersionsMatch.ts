@@ -15,21 +15,18 @@ export const doesVersionsMatch = async (
   const filteredPackages = filterPackages(packages, packageFilters);
 
   for (const pkg of filteredPackages) {
-    const local = pkg.dependencies.local;
     const external = pkg.dependencies.external;
-    for (const d of [local, external]) {
-      for (const type of dependencyTypes) {
-        for (const dependencyName in d[type] || {}) {
-          if (!skip.includes(dependencyName)) {
-            if (!dependentsMap[dependencyName]) {
-              dependentsMap[dependencyName] = [];
-            }
-            dependentsMap[dependencyName].push({
-              dependentName: pkg.name,
-              type,
-              version: d[type][dependencyName]
-            });
+    for (const type of dependencyTypes) {
+      for (const dependencyName in external[type] || {}) {
+        if (!skip.includes(dependencyName)) {
+          if (!dependentsMap[dependencyName]) {
+            dependentsMap[dependencyName] = [];
           }
+          dependentsMap[dependencyName].push({
+            dependentName: pkg.name,
+            type,
+            version: external[type][dependencyName]
+          });
         }
       }
     }

@@ -33,16 +33,19 @@ describe("Test task run", () => {
   const packages: Package[] = [
     {
       name: "@s/pkg1",
+      version: "1.0.0",
       dirName: "p1",
       dependencies: { local: {}, external: {} }
     },
     {
       name: "@s/pkg2",
+      version: "1.0.0",
       dirName: "p2",
       dependencies: { local: {}, external: { dev: { tslib: "^2.3.1" } } }
     },
     {
       name: "@s/pkg3",
+      version: "1.0.0",
       dirName: "p3",
       dependencies: {
         local: { dep: { "@s/pkg1": "^1.0.1" } },

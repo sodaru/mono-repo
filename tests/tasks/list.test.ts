@@ -24,6 +24,7 @@ describe("Test task list", () => {
     await expect(list(dir)).resolves.toEqual([
       {
         name: "@s/pkg1",
+        version: "1.0.1",
         dirName: "p1",
         dependencies: { local: {}, external: {} }
       } as Package
@@ -41,6 +42,7 @@ describe("Test task list", () => {
     await expect(list(dir)).resolves.toEqual([
       {
         name: "@s/pkg1",
+        version: "1.0.1",
         dirName: "p1",
         dependencies: { local: {}, external: { dep: { lodash: "^1.0.0" } } }
       } as Package
@@ -56,18 +58,20 @@ describe("Test task list", () => {
       }),
       "p2/package.json": JSON.stringify({
         name: "@s/pkg2",
-        version: "1.0.1",
+        version: "1.0.2",
         dependencies: { lodash: "^1.0.0", rimraf: "^1.0.1" }
       })
     });
     await expect(list(dir)).resolves.toEqual([
       {
         name: "@s/pkg1",
+        version: "1.0.1",
         dirName: "p1",
         dependencies: { local: {}, external: { dep: { lodash: "^1.0.0" } } }
       } as Package,
       {
         name: "@s/pkg2",
+        version: "1.0.2",
         dirName: "p2",
         dependencies: {
           local: {},
@@ -93,11 +97,13 @@ describe("Test task list", () => {
     await expect(list(dir)).resolves.toEqual([
       {
         name: "@s/pkg1",
+        version: "1.0.1",
         dirName: "p1",
         dependencies: { local: {}, external: {} }
       } as Package,
       {
         name: "@s/pkg2",
+        version: "1.0.1",
         dirName: "p2",
         dependencies: {
           local: { dep: { "@s/pkg1": "^1.0.1" } },
@@ -125,11 +131,13 @@ describe("Test task list", () => {
     await expect(list(dir)).resolves.toEqual([
       {
         name: "@s/pkg1",
+        version: "1.0.1",
         dirName: "p1",
         dependencies: { local: {}, external: { dev: { typescript: "^4.2.1" } } }
       } as Package,
       {
         name: "@s/pkg2",
+        version: "1.0.1",
         dirName: "p2",
         dependencies: {
           local: {

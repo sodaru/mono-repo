@@ -7,6 +7,7 @@ import { infoLog } from "../utils";
 
 export const publish = async (
   dir: string,
+  rootVersion: string,
   packages: Package[],
   verbose: boolean
 ) => {
@@ -16,7 +17,7 @@ export const publish = async (
       join(packageDir, "package.json")
     )) as PackageJson;
 
-    if (!packageJson.private) {
+    if (!packageJson.private && packageJson.version == rootVersion) {
       infoLog(pkg.name, "Publishing", "npm publish");
 
       await npmRunner(

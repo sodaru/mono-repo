@@ -1,8 +1,11 @@
+import { existsSync } from "fs";
 import { CommonOptions, taskRunner, Command } from "nodejs-cli-runner";
+import { join } from "path";
 import {
   addPackageFiltersOption,
   PackageFiltersOption
 } from "../commandCommonOptions";
+import { gitRunner } from "../gitRunner";
 import { list } from "../tasks/list";
 import { version } from "../tasks/version";
 import { getPackagesDir, readRootPackageJson } from "../utils";
@@ -32,6 +35,18 @@ const versionAction = async (options: VersionOptions) => {
     packages,
     options.packages
   );
+
+  if (existsSync(join(dir, ".git"))) {
+    await taskRunner(
+      `stage changes to git`,
+      gitRunner,
+      options.verbose,
+      dir,
+      "add",
+      ["-A"],
+      options.verbose
+    );
+  }
 };
 
 const versionCommand = new Command("version");

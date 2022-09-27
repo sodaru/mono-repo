@@ -105,7 +105,10 @@ Applies root package version to all (or selected) child packages, and updates th
 
 To be used in `version` script of the root package to pipeline the version change from root to child packages.
 
-> IMP NOTE: Lifecycle scipts `preversion`, `version`, `postversion` are not run
+> IMP NOTE:
+>
+> - Lifecycle scipts `preversion`, `version`, `postversion` are not run
+> - The updated files are added to git stage, if git is enabled for the root package
 
 #### **6. publish**
 
